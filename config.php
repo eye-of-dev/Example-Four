@@ -16,7 +16,7 @@ define('DIR_MODELS', $root_dir . '/models/');
 define('SITE_ROOT', $_SERVER['SERVER_NAME']);
 
 // DB
-define('DB_DRIVER', 'mysqli'); // you can use mysqli, mysql
+define('DB_DRIVER', 'mysql'); // you can use mysqli, mysql
 define('DB_HOSTNAME', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'secret');

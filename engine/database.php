@@ -11,19 +11,19 @@ class Database
 
     private $_driver;
 
-    function __construct($driver, $hostname, $username, $password, $database)
+    public function __construct($driver, $hostname, $username, $password, $database)
     {
-
         $file = DIR_LIBS . $driver . '.php';
 
         if (file_exists($file))
         {
-            require_once DIR_LIBS . $driver . '.php';
+            require_once($file);
 
             $class = 'DB' . $driver;
 
-            $this->_driver = $class::getInstance($hostname, $username, $password, $database);
-        } else
+            $this->_driver = new $class($hostname, $username, $password, $database);
+        }
+        else
         {
             exit('Error: Could not load database driver type ' . $driver . '!');
         }
