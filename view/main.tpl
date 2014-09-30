@@ -11,13 +11,19 @@
     </head>
     <body>
         <div class="wrapper">
-            <div id="notification" style="display: none;">
-                <a href="javascript:void(0)" title="Close">
-                    <img src="/css/images/close.png" alt="close" id="close">
-                </a>
+            <?php if(isset($errors) && !empty($errors)): ?>
+            <div id="notification" style="display: block;">
+                <?php foreach($errors as $error): ?>
+                <div class="errors"><?php echo $error; ?></div>
+                <?php endforeach; ?>
+                <a href="javascript:void(0)" title="Close" onclick="hide_block();"><img src="/css/images/close.png" alt="close" id="close"></a>
             </div>
+            <?php else: ?>
+            <div id="notification" style="display: none;"></div>
+            <?php endif; ?>
             <div id="main">
-                <h2>INICOM.Client</h2>
+                <h2><?php echo $title; ?></h2>
+                <?php if ( ! $auth): ?>
                 <div class="forms">
                     <div id="login-form" style="<?php echo ( ! $action || $action == 'login') ? 'display: block;': 'display: none;'?>">
                         <h4><?php echo $text_auth; ?></h4>
@@ -29,7 +35,7 @@
                                 <input type="password" name="password" value="" placeholder="<?php echo $password; ?>" id="password">
                             </p>
                             <p class="buttons">
-                                <input type="submit" name="submit" value="Войти"  /> | <a href="javascript:void(0);" id="show-registr-form"><?php echo $registration; ?></a>
+                                <input type="submit" name="submit" value="<?php echo $button_name; ?>"  /> | <a href="javascript:void(0);" id="show-registr-form"><?php echo $registration; ?></a>
                             </p>
                         </form>
                     </div>
@@ -60,7 +66,7 @@
                             <p>
                                 <span><?php echo $gender; ?></span>
                                 <label for="gender_man"><?php echo $man; ?></label><input id="gender_man" type="radio" value="1" name="man">
-                                <label for="gender_woman"><?php echo $woman; ?></label><input id="gender_woman" type="radio" value="1" name="man">
+                                <label for="gender_woman"><?php echo $woman; ?></label><input id="gender_woman" type="radio" value="2" name="man">
                             </p>
                             <p>
                                 <input type="text" name="mail" value="" id="reg_mail" placeholder="<?php echo $mail; ?>">
@@ -87,7 +93,169 @@
                         </form>
                     </div>
                 </div>
+                <?php else: ?>
+                <div class="user-info">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2"><?php echo $user_info; ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="label"><?php echo $login; ?></td>
+                                <td><?php print $user['login']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo $avatar; ?></td>
+                                <td>
+                                    <?php if($user['avatar']) :?>
+                                    <img src="images/<?php print $user['avatar']; ?>" alt="" width="150">
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo $name; ?></td>
+                                <td><?php print $user['name']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo $surname; ?></td>
+                                <td><?php print $user['last_name']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo $birthday; ?></td>
+                                <td><?php print date('d.m.Y', strtotime($user['date'])); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo $city; ?></td>
+                                <td><?php print $user['city']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo $mail; ?></td>
+                                <td><?php print $user['mail']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo $phone; ?></td>
+                                <td><?php print $user['phone']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo $gender; ?></td>
+                                <td><?php print ($user['gender'] == 1) ? $man : $woman; ?></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th colspan="2"><a href="/index.php?a=logout"><?php echo $logout; ?></a></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
     </body>
+    <script type="text/javascript">
+
+        function hide_block()
+        {
+            document.getElementById('notification').style.display = 'none';
+        }
+
+        function validate_login_form()
+        {
+            var login = document.getElementById('login').value;
+            var password = document.getElementById('password').value;
+            var counter = 0;
+
+            var div = document.getElementById('notification');
+            div.innerHTML = '';
+
+            if (login.length < 1){
+                div.innerHTML += '<div class="errors"><?php echo $error_login; ?></div>';
+                counter++;
+            }
+
+            if (password.length < 1){
+                div.innerHTML += '<div class="errors"><?php echo $error_password; ?></div>';
+                counter++;
+            }
+
+            if (counter > 0){
+                div.innerHTML += '<a href="javascript:void(0)" title="Close" onclick="hide_block();"><img src="/css/images/close.png" alt="close" id="close"></a>';
+                div.style.display = 'block';
+                return false;
+            }
+            else
+                return true;    
+        }
+        
+        function validate_reg_form()
+        {
+            var name = document.getElementById('reg_name').value;
+            var last = document.getElementById('reg_last_name').value;
+            var mail = document.getElementById('reg_mail').value;
+            var phone = document.getElementById('reg_phone').value;
+            var login = document.getElementById('reg_login').value;
+            var password = document.getElementById('reg_pass').value;
+            var password_conf = document.getElementById('reg_conf_pass').value;
+            var avatar = document.getElementById('reg_avatar').value;
+
+            var counter = 0;
+
+            var div = document.getElementById('notification');
+            div.innerHTML = '';
+
+            if (name.length < 1 || name.length > 32){
+                div.innerHTML += '<div class="errors"><?php echo $error_firstname; ?></div>';
+            }
+
+            if (last.length < 1 || last.length > 32){
+                div.innerHTML += '<div class="errors"><?php echo $error_lastname; ?></div>';
+                counter++;
+            }
+            
+            if( ! mail.match(/^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$/gi)){
+                div.innerHTML += '<div class="errors"><?php echo $error_email; ?></div>';
+                counter++;
+            }
+
+            if(phone.length < 10 || phone.length > 32 || !phone.match(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/gi)){
+                div.innerHTML += '<div class="errors"><?php echo $error_telephone; ?></div>';
+                counter++;
+            }
+
+            if (login.length < 1){
+                div.innerHTML += '<div class="errors"><?php echo $error_reg_login; ?></div>';
+                counter++;
+            }
+
+            if(password.length < 2 || password.length > 20){
+                div.innerHTML += '<div class="errors"><?php echo $error_password; ?></div>';
+                counter++;
+            }
+
+            if( password !== password_conf ){
+                div.innerHTML += '<div class="errors"><?php echo $error_confirm; ?></div>';
+                counter++;
+            }
+
+            if (avatar.length > 0){
+                var search = avatar.search(/^.*\.(?:gif|jpg|png)\s*$/ig);
+
+                if(search !== 0){
+                    div.innerHTML += '<div class="errors"><?php echo $error_file_type; ?></div>';
+                    counter++;
+                }
+            }
+
+            if (counter > 0){
+                div.innerHTML += '<a href="javascript:void(0)" title="Close" onclick="hide_block();"><img src="/css/images/close.png" alt="close" id="close"></a>';
+                div.style.display = 'block';
+                return false;
+            }
+            else
+                return true;
+        }
+        
+    </script>
 </html>

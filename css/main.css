@@ -55,7 +55,8 @@ dfn {font-style:normal;}
     font: 700 14px/normal "Arial Полужирный","Arial"
 }
 
-#main .forms{
+#main .forms,
+#main .user-info{
     background: #fff;
     padding: 50px;
     border: 1px solid #797979;
@@ -100,4 +101,25 @@ dfn {font-style:normal;}
     background: -moz-linear-gradient(0% 100% 90deg, #b3b3b3, #ededed);
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#b3b3b3), to(#ededed));
     width: 200px;
+}
+
+#main .user-info table{
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+
+#main .user-info table th{
+    background: #E7E7E7;
+    font: 700 14px/normal "Arial Полужирный","Arial";
+}
+
+#main .user-info table th,
+#main .user-info table td{
+    border: 1px solid #000;
+    height: 40px;
+}
+
+#main .user-info table .label{
+    font: 700 13px/normal "Arial Полужирный","Arial";
 }
