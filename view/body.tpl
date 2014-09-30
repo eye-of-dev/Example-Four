@@ -5,7 +5,7 @@
         <title><?php echo $title; ?></title>
         <base href="<?php echo $base; ?>" />
         
-        <link rel="stylesheet" type="text/css" href="css/cssf-base.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" defer="defer"></script>
         <script src="js/scripts.js" defer="defer"></script>
     </head>
@@ -49,7 +49,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="layout-box w-100" id="registr-form" style="<?php print ($action == 'reg') ? 'display: block;': 'display: none;'?>">
+                    <div class="layout-box w-100" id="registr-form" style="<?php echo ($action == 'reg') ? 'display: block;': 'display: none;'?>">
                         <h4 class="a-center"><?php echo $treg; ?></h4>
                         <div class="box content w-65" style="margin-left:125px;">
                             <form action="/index.php?a=reg" method="post" accept-charset="utf-8" role="form" enctype="multipart/form-data" onsubmit="return validate_reg_form();">

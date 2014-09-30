@@ -5,7 +5,7 @@ defined('EXAMPLE') or die('Access denied');
 /**
  * Description of body
  */
-class Body extends Controller
+class Main extends Controller
 {
 
     private $errors = array();
@@ -31,14 +31,14 @@ class Body extends Controller
     {
         // lang
         $this->data['title'] = $this->language->get('title');
-        $this->data['tauth'] = $this->language->get('tauth');
+        $this->data['text_auth'] = $this->language->get('text_auth');
         $this->data['login'] = $this->language->get('login');
         $this->data['password'] = $this->language->get('password');
         $this->data['conf_password'] = $this->language->get('conf_password');
         $this->data['button_name'] = $this->language->get('button_name');
         $this->data['registration'] = $this->language->get('registration');
 
-        $this->data['treg'] = $this->language->get('treg');
+        $this->data['text_reg'] = $this->language->get('text_reg');
         $this->data['name'] = $this->language->get('name');
         $this->data['surname'] = $this->language->get('surname');
         $this->data['birthday'] = $this->language->get('birthday');
@@ -138,7 +138,7 @@ class Body extends Controller
             $this->data['user'] = $this->model_user->getUser($this->request->cookie['USER_UID']);
         }
 
-        $this->template = 'body.tpl';
+        $this->template = 'main.tpl';
         print $this->render();
     }
 

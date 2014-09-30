@@ -1,0 +1,103 @@
+html, body {color:#4d4d4d; margin: 0; padding: 0; font-size: 13px; font-family:'Arial Обычный', 'Arial Полужирный', 'Arial', sans-serif;}
+body {background:rgba(214, 214, 214, 1);}
+table td {padding: 0px;}
+p {margin: 0; padding: 6px 0 5px;}
+ul,ol {margin: 0; padding: 0; }
+li {margin: 0; padding: 0; list-style-type: none;}
+form {padding: 0; margin: 0;}
+select {padding:2px;}
+input,h3 {margin:0; padding:0;}
+a {text-decoration: underline; color: #323232; cursor:pointer;}
+a:hover {text-decoration: none; cursor:pointer;}
+img {border: 0;margin: 0; padding: 0;}
+img, a, span {outline:none;}
+dt,dl,dd {margin:0; padding:0;}
+.clear, .clr {clear: both;}
+dfn {font-style:normal;}
+.fl_left{float: left;}
+.fl_right{float: right;}
+
+.wrapper{
+    width: 960px;
+    margin: 0 auto;
+}
+
+.wrapper #notification {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #4f5155;
+    margin: 30px 0;
+    padding: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.wrapper #notification img{
+    position: absolute;
+    right: -12px;
+    top: -12px;
+}
+
+.wrapper #notification .errors{
+    color: #ff0000;
+}
+
+#main{
+    margin: 30px 0;
+    position: relative;
+}
+
+#main h2{
+    text-align: center;
+    font: 700 32px/normal "Arial Полужирный","Arial";
+}
+#main .forms h4{
+    margin: 0 0 20px 0;
+    font: 700 14px/normal "Arial Полужирный","Arial"
+}
+
+#main .forms{
+    background: #fff;
+    padding: 50px;
+    border: 1px solid #797979;
+    border-radius: 3px;
+    margin: auto;
+    width: 50%;
+    text-align: center;
+}
+
+#main .forms p > span{
+    display: block;
+    padding-bottom: 10px;
+    font: 400 14px/normal "Arial Обычный","Arial";
+    color: #000;
+}
+
+#main .forms p > label{
+    margin-right: 10px;
+    color: #000;
+}
+
+#main .forms input[type="text"],
+#main .forms input[type="password"],
+#main .forms input[type="file"],
+#main .forms input[type="submit"],
+#main .forms select{
+    border: 1px solid #c1c1c1;
+    border-radius: 3px;
+    box-shadow: 0 0 5px #777777;
+    height: 40px;
+    padding: 0 10px;
+}
+
+#main .forms input[type='text'],
+#main .forms input[type='password'],
+#main .forms input[type='file']{
+    width: 300px;
+    padding: 0 20px;
+}
+
+#main .forms input[type='submit']{
+    background: -moz-linear-gradient(0% 100% 90deg, #b3b3b3, #ededed);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#b3b3b3), to(#ededed));
+    width: 200px;
+}
