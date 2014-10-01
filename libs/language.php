@@ -1,7 +1,6 @@
 <?php
 class Language {
-	private $default = 'english';
-	private $directory;
+	private $directory; // Язык по умолчанию
 	private $data = array();
 
 	public function __construct($directory) {
@@ -16,6 +15,7 @@ class Language {
 		$file = DIR_LANG . $lang . '/main.php';
 
 		if (file_exists($file)) {
+                    
 			$_ = array();
 
 			require($file);
@@ -24,6 +24,18 @@ class Language {
 
 			return $this->data;
 		}
+                
+                $file = DIR_LANG . $this->directory . '/main.php';
+                
+		if (file_exists($file)) {
+			$_ = array();
+
+			require($file);
+
+			$this->data = array_merge($this->data, $_);
+
+			return $this->data;
+		}
+                
 	}
 }
-?>

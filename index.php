@@ -29,5 +29,5 @@ $registry->set('request', $request);
 $language = new Language(SITE_LANG);
 $registry->set('language', $language); 
 
-$body = new Body($registry);
+$body = new Main($registry);
 $body->index();

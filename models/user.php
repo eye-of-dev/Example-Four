@@ -8,9 +8,18 @@ class ModelUser extends Model
      */
     public function registration()
     {
+        $date = date('Y-m-d H:i:s', strtotime($this->request->post['day'] . '-' . $this->request->post['month'] . '-' . $this->request->post['year']));
+        
         $sql = "INSERT INTO `users` SET "
                 . "`login` = '" . $this->request->post['login'] . "', "
-                . "`password`='" . md5($this->request->post['password']) . "'"; // Да, да знаю что надо использовать password_hash()
+                . "`password`='" . md5($this->request->post['password']) . "'," // Да, да знаю что надо использовать password_hash()
+                . "`name`='" . $this->db->escape($this->request->post['name']) . "', "
+                . "`last_name`='" . $this->db->escape($this->request->post['last_name']) . "', "
+                . "`date`='" . $date . "', "
+                . "`city`='" . $this->db->escape($this->request->post['city']) . "', "
+                . "`gender`='" . (int) $this->request->post['man'] . "', "
+                . "`mail`='" . $this->db->escape($this->request->post['mail']) . "', "
+                . "`phone`='" . $this->db->escape($this->request->post['phone']) . "'"; 
         
         $this->db->query($sql);
         
@@ -20,27 +29,20 @@ class ModelUser extends Model
         if (isset($this->request->files['avatar']) && $this->request->files['avatar']['tmp_name']){
             $filename = basename(html_entity_decode($this->request->files['avatar']['name'], ENT_QUOTES, 'UTF-8'));
             
+            if ( ! file_exists(DIR_IMAGES . 'avatars/'))
+            {
+                mkdir(DIR_IMAGES . 'avatars/');
+            }
+            
             if ( ! file_exists(DIR_IMAGES . 'avatars/' . $user_id . '/')){
                 mkdir(DIR_IMAGES . 'avatars/' . $user_id . '/', 0777);
             }
 
             move_uploaded_file($this->request->files['avatar']['tmp_name'], DIR_IMAGES . 'avatars/' . $user_id . '/' . $filename);
             $filename = 'avatars/' . $user_id . '/' . $filename;
+            
+            $this->db->query("UPDATE `users` SET `avatar`='" . $filename . "' WHERE `id`='" . $user_id . "'");
         }
-        
-        $date = date('Y-m-d H:i:s', strtotime($this->request->post['day'] . '-' . $this->request->post['month'] . '-' . $this->request->post['year']));
-        $sql = "INSERT INTO `user_data` SET "
-                . "`user_id` = '" . $user_id . "', "
-                . "`name`='" . $this->db->escape($this->request->post['name']) . "', "
-                . "`last_name`='" . $this->db->escape($this->request->post['last_name']) . "', "
-                . "`date`='" . $date . "', "
-                . "`city`='" . $this->db->escape($this->request->post['city']) . "', "
-                . "`gender`='" . (int) $this->request->post['man'] . "', "
-                . "`mail`='" . $this->db->escape($this->request->post['mail']) . "', "
-                . "`phone`='" . $this->db->escape($this->request->post['phone']) . "', "
-                . "`avatar`='" . $filename . "'";
-        
-        $this->db->query($sql);
         
     }
  
@@ -51,10 +53,7 @@ class ModelUser extends Model
      */
     public function getUser($user_id){
         
-        $sql = "SELECT u.`login`, ud.`name`, ud.`last_name`, ud.`date`, ud.`city`, ud.`mail`, ud.`phone`, ud.`avatar`, ud.`gender` "
-                . "FROM `users` u "
-                . "JOIN `user_data` ud ON ud.user_id = u.id "
-                . "WHERE u.`id` = '" . $user_id . "';";
+        $sql = "SELECT u.* FROM `users` u WHERE u.`id` = '" . $user_id . "';";
         
         $result = $this->db->query($sql);
         

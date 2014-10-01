@@ -5,9 +5,8 @@ defined('EXAMPLE') or die('Access denied');
 /**
  * Description of body
  */
-class Body extends Controller
+class Main extends Controller
 {
-
     private $errors = array();
 
     public function __construct($registry)
@@ -31,14 +30,14 @@ class Body extends Controller
     {
         // lang
         $this->data['title'] = $this->language->get('title');
-        $this->data['tauth'] = $this->language->get('tauth');
+        $this->data['text_auth'] = $this->language->get('text_auth');
         $this->data['login'] = $this->language->get('login');
         $this->data['password'] = $this->language->get('password');
         $this->data['conf_password'] = $this->language->get('conf_password');
         $this->data['button_name'] = $this->language->get('button_name');
         $this->data['registration'] = $this->language->get('registration');
 
-        $this->data['treg'] = $this->language->get('treg');
+        $this->data['text_reg'] = $this->language->get('text_reg');
         $this->data['name'] = $this->language->get('name');
         $this->data['surname'] = $this->language->get('surname');
         $this->data['birthday'] = $this->language->get('birthday');
@@ -130,7 +129,8 @@ class Body extends Controller
         $this->data['error_reg_login'] = $this->language->get('error_reg_login');
 
         $this->data['errors'] = $this->errors;
-
+        unset($this->errors);
+        
         $this->data['auth'] = $this->model_authorization->check();
 
         if (isset($this->request->cookie['USER_UID']))
@@ -138,7 +138,7 @@ class Body extends Controller
             $this->data['user'] = $this->model_user->getUser($this->request->cookie['USER_UID']);
         }
 
-        $this->template = 'body.tpl';
+        $this->template = 'main.tpl';
         print $this->render();
     }
 
@@ -154,54 +154,54 @@ class Body extends Controller
         {
             if ((mb_strlen($this->request->post['login']) < 1) || (mb_strlen($this->request->post['login']) > 32))
             {
-                $this->errors['login']['login'] = $this->language->get('error_login');
+                $this->errors['login'] = $this->language->get('error_login');
             }
 
             if ((mb_strlen($this->request->post['password']) < 1) || (mb_strlen($this->request->post['password']) > 20))
             {
-                $this->errors['login']['password'] = $this->language->get('error_password');
+                $this->errors['password'] = $this->language->get('error_password');
             }
         }
         elseif ($form === 'reg')
         {
             if ((mb_strlen($this->request->post['name']) < 1) || (mb_strlen($this->request->post['name']) > 32))
             {
-                $this->errors['reg']['error_firstname'] = $this->language->get('error_firstname');
+                $this->errors['error_firstname'] = $this->language->get('error_firstname');
             }
 
             if ((mb_strlen($this->request->post['last_name']) < 1) || (mb_strlen($this->request->post['last_name']) > 32))
             {
-                $this->errors['reg']['error_lastname'] = $this->language->get('error_lastname');
+                $this->errors['error_lastname'] = $this->language->get('error_lastname');
             }
 
             if ((mb_strlen($this->request->post['mail']) > 96) || !preg_match('/^[^\@]+@.*\.[a-z]{2,6}$/i', $this->request->post['mail']))
             {
-                $this->errors['reg']['error_email'] = $this->language->get('error_email');
+                $this->errors['error_email'] = $this->language->get('error_email');
             }
 
             if ((mb_strlen($this->request->post['phone']) < 10) || (mb_strlen($this->request->post['phone']) > 32))
             {
-                $this->errors['reg']['error_telephone'] = $this->language->get('error_telephone');
+                $this->errors['error_telephone'] = $this->language->get('error_telephone');
             }
 
             if ($this->model_user->getUserByLogin($this->request->post['login']))
             {
-                $this->errors['reg']['error_login_exist'] = $this->language->get('error_login_exist');
+                $this->errors['error_login_exist'] = $this->language->get('error_login_exist');
             }
 
             if ((mb_strlen($this->request->post['login']) < 1) || (mb_strlen($this->request->post['login']) > 32))
             {
-                $this->errors['reg']['error_login'] = $this->language->get('error_login');
+                $this->errors['error_login'] = $this->language->get('error_login');
             }
 
             if ((mb_strlen($this->request->post['password']) < 3) || (mb_strlen($this->request->post['password']) > 20))
             {
-                $this->errors['reg']['error_password'] = $this->language->get('error_password');
+                $this->errors['error_password'] = $this->language->get('error_password');
             }
 
             if ($this->request->post['confirm_password'] != $this->request->post['password'])
             {
-                $this->errors['reg']['error_confirm'] = $this->language->get('error_confirm');
+                $this->errors['error_confirm'] = $this->language->get('error_confirm');
             }
 
             if (isset($this->request->files['avatar']) && $this->request->files['avatar']['tmp_name'])
@@ -210,12 +210,12 @@ class Body extends Controller
 
                 if ((mb_strlen($filename) < 3) || (mb_strlen($filename) > 255))
                 {
-                    $this->errors['reg']['error_filename'] = $this->language->get('error_filename');
+                    $this->errors['error_filename'] = $this->language->get('error_filename');
                 }
 
                 if ($this->request->files['avatar']['size'] > 300000)
                 {
-                    $this->errors['reg']['error_file_size'] = $this->language->get('error_file_size');
+                    $this->errors['error_file_size'] = $this->language->get('error_file_size');
                 }
 
                 $allowed = array(
@@ -228,7 +228,7 @@ class Body extends Controller
 
                 if (!in_array($this->request->files['avatar']['type'], $allowed))
                 {
-                    $this->errors['reg']['error_file_type'] = $this->language->get('error_file_type');
+                    $this->errors['error_file_type'] = $this->language->get('error_file_type');
                 }
 
                 $allowed = array(
@@ -240,19 +240,19 @@ class Body extends Controller
 
                 if (!in_array(strtolower(strrchr($filename, '.')), $allowed))
                 {
-                    $this->errors['reg']['error_file_type'] = $this->language->get('error_file_type');
+                    $this->errors['error_file_type'] = $this->language->get('error_file_type');
                 }
 
                 $content = file_get_contents($this->request->files['avatar']['tmp_name']);
 
                 if (preg_match('/\<\?php/i', $content))
                 {
-                    $this->errors['reg']['error_file_type'] = $this->language->get('error_file_type');
+                    $this->errors['error_file_type'] = $this->language->get('error_file_type');
                 }
 
                 if ($this->request->files['avatar']['error'] != UPLOAD_ERR_OK)
                 {
-                    $this->errors['reg']['error_file_type'] = $this->language->get('error_file_type');
+                    $this->errors['error_file_type'] = $this->language->get('error_file_type');
                 }
             }
         }
